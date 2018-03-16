@@ -22,13 +22,13 @@ public class UserController {
 	public	String create(User user)	{
 		System.out.println("user = " + user);
 		userRepository.save(user);
-		return "redirect:/list";
+		return "redirect:/user/list";
 	}
 	
-	@GetMapping("/list")
+	@GetMapping("/user/list")
 	public String list(Model model) {
-		model.addAttribute("users", userRepository.findAll());
-		return "list"; 
+		model.addAttribute("user", userRepository.findAll());
+		return "./user/list"; 
 				
 	}
 }

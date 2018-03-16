@@ -16,7 +16,7 @@
     <div class="col-md-12">
         <div class="navbar-header">
 
-            <a href="../index.html" class="navbar-brand">SLiPP</a>
+            <a href="../index.html" class="navbar-brand">PLUTO</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1">
                 <i class="glyphicon glyphicon-search"></i>
             </button>
@@ -39,7 +39,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="/user/list"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -79,16 +79,24 @@
           <table class="table table-hover">
               <thead>
                 <tr>
-                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                    <th>#</th> 
+                    <th>사용자 아이디</th> 
+                    <th>이름</th> 
+                    <th>이메일</th>
+                    <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <th scope="row">1</th> <td>javajigi</td> <td>자바지기</td> <td>javajigi@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th> <td>slipp</td> <td>슬립</td> <td>slipp@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
+              	{{#user}}
+              		<tr>
+	                    <th scope="row">{{id}}</th> 
+	                    <td>{{userId}}</td> 
+	                    <td>{{name}}</td> 
+	                    <td>{{email}}</td>
+	                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+	                </tr>
+              	{{/user}}               
+                
               </tbody>
           </table>
         </div>
