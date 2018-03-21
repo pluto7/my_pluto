@@ -30,6 +30,24 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+	public Long getId() {
+		return id;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public String getPassWord() {
+		return passWord;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", passWord=" + passWord + ", name=" + name + ", email=" + email + "]";
