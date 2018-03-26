@@ -48,10 +48,21 @@ public class User {
 		return email;
 	}
 	
+//	회원가입 수정
+	public void update(User newUser) {
+		// TODO Auto-generated method stub
+		this.passWord	=	newUser.passWord;
+		this.name		=	newUser.name;
+		this.email		=	newUser.email;
+	}	
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", passWord=" + passWord + ", name=" + name + ", email=" + email + "]";
 	}
+	
+	
+	
 	
 	
 	
