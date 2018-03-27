@@ -1,5 +1,6 @@
 package com.pluto.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,18 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Long id, Model model) {
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
+		Object	tempUser	=	session.getAttribute("sessionedUser");
+		
+		if(tempUser == null) {
+			return "redirect:/users/loginForm";
+					
+		}
+		User	sessionedUser	=	(User)tempUser;
+		
+		if (!id.equals(sessionedUser.getId())) {
+			throw new IllegalStateException("You can't update the anther user");
+		}
 		System.out.println("이건??");
 		User user	=	userRepository.getOne( id );
 		System.out.println(user);
@@ -51,9 +63,22 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public String update(@PathVariable Long id, User newUser) {
+	public String update(@PathVariable Long id, User updateUser, HttpSession session) {
+		
+		Object	tempUser	=	session.getAttribute("sessionedUser");
+		
+		if(tempUser == null) {
+			return "redirect:/users/loginForm";
+					
+		}
+		User	sessionedUser	=	(User)tempUser;
+		
+		if (!id.equals(sessionedUser.getId())) {
+			throw new IllegalStateException("You can't update the anther user");
+		}
+		
 		User user	=	userRepository.getOne(id);
-		user.update(newUser);
+		user.update(updateUser);
 		userRepository.save(user);
 		return	"redirect:/users";
 	}
@@ -77,14 +102,15 @@ public class UserController {
 			return "redirect:/users/loginForm";
 		}
 		
-		session.setAttribute("user", user);
+		System.out.println("Login Success");
+		session.setAttribute("sessionedUser", user);
 		
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute("sessionedUser");
 		return "redirect:/";
 	}
 }
