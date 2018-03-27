@@ -1,5 +1,7 @@
 package com.pluto.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,4 +58,27 @@ public class UserController {
 		return	"redirect:/users";
 	}
 	
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "/user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userId, String password, HttpSession session) {
+		System.out.println("userId = " + userId + " password = "+ password);
+		User user	=	userRepository.findByUserId(userId);
+		if(user == null) {
+			System.out.println("user_ID");
+			return "redirect:/users/loginForm";
+		}
+		
+		if (!password.equals(user.getPassWord())) {
+			System.out.println("password");
+			return "redirect:/users/loginForm";
+		}
+		
+		session.setAttribute("user", user);
+		
+		return "redirect:/";
+	}
 }
