@@ -32,15 +32,32 @@ public class User {
 	}
 	
 	
-	public Long getId() {
+	public Long getId() {	
 		return id;
 	}
+	
+//	아이디값이 일치하는 지 확인하는 메소드
+	public boolean matchId(Long newId) {
+		if(newId == null) {
+			return false;
+		}		
+		return newId.equals(id);
+	}
+	
+	
 	public String getUserId() {
 		return userId;
 	}
-	public String getPassWord() {
-		return passWord;
+//	패스워드 값이 일치하는 지 확인하는 메소드
+	public boolean matchPassword(String newPassword) {
+		if	(newPassword == null) {
+			return false;
+		}
+		
+		return newPassword.equals(passWord);
+				
 	}
+	
 	public String getName() {
 		return name;
 	}
