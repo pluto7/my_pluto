@@ -2,13 +2,17 @@ package com.pluto.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Question {
@@ -23,9 +27,14 @@ public class Question {
 	
 	private String title;
 	
+	@Lob
 	private String contents;
 	
 	private LocalDateTime createDate;
+	
+	@OneToMany(mappedBy="question")
+	@OrderBy("id ASC")
+	private List<Answer> answers;
 	
 //	기본생성자를 꼭 만들어줘야한다.
 	public Question() { }
@@ -66,7 +75,7 @@ public class Question {
 		if(createDate == null) {
 			return "";
 		}
-		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 	}
 
 	public void update(String title, String contents) {
@@ -74,5 +83,12 @@ public class Question {
 		this.title	=	title;
 		this.contents	=	contents;
 	}
+
+	public boolean isSameWrite(User longinUser) {
+		// TODO Auto-generated method stub
+		return this.writer.equals(longinUser);
+	}
+
+	
 	
 }
