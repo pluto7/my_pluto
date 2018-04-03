@@ -72,6 +72,12 @@ public class Answer {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Answer [id=" + id + ", writer=" + writer + ", question=" + question + ", contents=" + contents
+				+ ", createDate=" + createDate + "]";
+	}
 	
 	
 }

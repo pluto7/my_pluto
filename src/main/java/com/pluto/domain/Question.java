@@ -23,7 +23,6 @@ public class Question {
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private User writer;
-//	private String writer;
 	
 	private String title;
 	
