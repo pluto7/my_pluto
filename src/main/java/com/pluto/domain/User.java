@@ -5,17 +5,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class User {	
 	@Id
 	@GeneratedValue
+	@JsonProperty
 	private Long	id;
 	
 	@Column(nullable=false, length=20, unique=true)
+	@JsonProperty
 	private	String userId;
 	
+	@JsonIgnore
 	private String passWord;
+	
+	@JsonProperty
 	private String name;
+	
+	@JsonProperty
 	private String email;
 	
 	public void setUserId(String userId) {
@@ -32,9 +42,9 @@ public class User {
 	}
 	
 	
-	public Long getId() {	
-		return id;
-	}
+//	public Long getId() {	
+//		return id;
+//	}
 	
 //	아이디값이 일치하는 지 확인하는 메소드
 	public boolean matchId(Long newId) {
@@ -45,9 +55,9 @@ public class User {
 	}
 	
 	
-	public String getUserId() {
-		return userId;
-	}
+//	public String getUserId() {
+//		return userId;
+//	}
 //	패스워드 값이 일치하는 지 확인하는 메소드
 	public boolean matchPassword(String newPassword) {
 		if	(newPassword == null) {
@@ -58,13 +68,13 @@ public class User {
 				
 	}
 	
-	public String getName() {
-		return name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	
+//	public String getName() {
+//		return name;
+//	}
+//	public String getEmail() {
+//		return email;
+//	}
+//	
 //	회원가입 수정
 	public void update(User newUser) {
 		// TODO Auto-generated method stub

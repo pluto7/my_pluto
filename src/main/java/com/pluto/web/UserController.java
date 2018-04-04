@@ -53,7 +53,7 @@ public class UserController {
 			throw new IllegalStateException("You can't update the anther user");
 		}
 		System.out.println("이건??");
-		User user	=	userRepository.getOne( id );
+		User user	=	userRepository.findOne( id );
 		System.out.println(user);
 		model.addAttribute("user", user);
 		System.out.println("저건??");
@@ -72,7 +72,7 @@ public class UserController {
 			throw new IllegalStateException("You can't update the anther user");
 		}
 		
-		User user	=	userRepository.getOne(id);
+		User user	=	userRepository.findOne(id);
 		user.update(updateUser);
 		userRepository.save(user);
 		return	"redirect:/users";

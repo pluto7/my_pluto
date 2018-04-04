@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.pluto.domain.Answer;
 import com.pluto.domain.AnwserRepository;
@@ -14,9 +15,9 @@ import com.pluto.domain.Question;
 import com.pluto.domain.QuestionRepository;
 import com.pluto.domain.User;
 
-@Controller
-@RequestMapping("//questions/{questionId}/answers")
-public class AnswerController {
+@RestController
+@RequestMapping("/api/questions/{questionId}/answers")
+public class ApiAnswerController {
 	@Autowired
 	private AnwserRepository	answerRepository;
 	
@@ -24,18 +25,18 @@ public class AnswerController {
 	private QuestionRepository	qustionRepository;
 	
 	@PostMapping("")
-	public String create(@PathVariable Long questionId, String contents, HttpSession session) {
+	public Answer create(@PathVariable Long questionId, String contents, HttpSession session) {
 		System.out.println("답변달기까지는 오나??");
 		
 		if(!HttpSessionUtils.isLoginUser(session)) {		
-			return "/users/loginForm";
+			return null;
 		}
 		
 		User loginUser	=	HttpSessionUtils.getUserFromSession(session);
-		Question	question	=	qustionRepository.getOne(questionId); 
+		Question	question	=	qustionRepository.findOne(questionId); 
 		Answer answer	=	new Answer(loginUser, question, contents);
-		answerRepository.save(answer);
-		return String.format("redirect:/questions/%d", questionId);
+		return answerRepository.save(answer);
+//		return String.format("redirect:/questions/%d", questionId);
 		
 		
 	}

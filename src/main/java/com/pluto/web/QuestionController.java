@@ -46,14 +46,14 @@ public class QuestionController {
 	@GetMapping("/{id}")
 	public String show(@PathVariable Long id, Model model) {
 		System.out.println("답변달기의 답이 넘어오는가??_시작");
-		model.addAttribute("question", questionRepository.getOne(id));
+		model.addAttribute("question", questionRepository.findOne(id));
 		System.out.println("답변달기의 답이 넘어오는가??_");
 		return "/qna/show";
 	}
 	
 	@GetMapping("/{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
-		Question question = questionRepository.getOne(id);
+		Question question = questionRepository.findOne(id);
 		Result result	=	valid(session, question);		
 		if(!result.isValid()) {
 			model.addAttribute("errorMessage", result.getErrorMessage());
@@ -61,17 +61,12 @@ public class QuestionController {
 		}
 
 		model.addAttribute("question", question);				
-		return "/qna/updateForm";
-
-		
+		return "/qna/updateForm";		
 	}
-	
-	
-	
 
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, String title, String contents, Model model, HttpSession session) {
-		Question question = questionRepository.getOne(id);
+		Question question = questionRepository.findOne(id);
 		Result result	=	valid(session, question);		
 		if(!result.isValid()) {
 			model.addAttribute("errorMessage", result.getErrorMessage());
@@ -86,21 +81,21 @@ public class QuestionController {
 	
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Long id, HttpSession session, Model model) {
-		Question question = questionRepository.getOne(id);
+		Question question = questionRepository.findOne(id);
 		Result result	=	valid(session, question);		
 		if(!result.isValid()) {
 			model.addAttribute("errorMessage", result.getErrorMessage());
 			return "/user/login"; 
 		}
 		
-		questionRepository.deleteById(id);
+		questionRepository.delete(id);
 		return "redirect:/";
 		
 		
 	}
 	private Result valid(HttpSession session, Question question) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
-			return Result.fail("로그인이 필요합니다."); 
+			return Result.fail("로그인이 필요합니다.");
 		}
 		
 		User loginUser	=	HttpSessionUtils.getUserFromSession(session);
