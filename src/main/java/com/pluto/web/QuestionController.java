@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pluto.domain.Question;
 import com.pluto.domain.QuestionRepository;
+import com.pluto.domain.Result;
 import com.pluto.domain.User;
 
 @Controller
@@ -52,105 +53,76 @@ public class QuestionController {
 	
 	@GetMapping("/{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
-		try {
-			Question question = questionRepository.getOne(id);		
-			hasPermission(session, question);
-				model.addAttribute("question", question);				
-				return "/qna/updateForm";
-//			}
-		} catch (IllegalStateException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "/user/login";
+		Question question = questionRepository.getOne(id);
+		Result result	=	valid(session, question);		
+		if(!result.isValid()) {
+			model.addAttribute("errorMessage", result.getErrorMessage());
+			return "/user/login"; 
 		}
-//		
-//		
-//		if(!HttpSessionUtils.isLoginUser(session)) {		
-//			return "/users/loginForm";
-//		}
-//		
-//		User sessionedUser	=	HttpSessionUtils.getUserFromSession(session);
-//		
-//		Question question = questionRepository.getOne(id);
-//		
-//		if (!question.isSameWrite(sessionedUser)) {
-//			return "/users/loginForm"; 
-//		}
-		
+
+		model.addAttribute("question", question);				
+		return "/qna/updateForm";
+
 		
 	}
 	
-	private boolean hasPermission(HttpSession session, Question question) {
-		if (!HttpSessionUtils.isLoginUser(session)) {
-			throw new IllegalStateException("로그인이 필요합니다."); 
-		}
-		
-		User loginUser	=	HttpSessionUtils.getUserFromSession(session);
-		if (!question.isSameWrite(loginUser)) {
-			throw new IllegalStateException("로그인 정보가 상이합니다."); 
-		}
-		
-		return true;
-	}
 	
+	
+
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, String title, String contents, Model model, HttpSession session) {
-		
-		try {
-			Question question = questionRepository.getOne(id);		
-			hasPermission(session, question);
-//				model.addAttribute("question", question);				
-				question.update(title, contents);
-				questionRepository.save(question);
-				return String.format("redirect:/questions/%d",id);
-//			}
-		} catch (IllegalStateException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "/user/login";
+		Question question = questionRepository.getOne(id);
+		Result result	=	valid(session, question);		
+		if(!result.isValid()) {
+			model.addAttribute("errorMessage", result.getErrorMessage());
+			return "/user/login"; 
 		}
-//		
-//		if(!HttpSessionUtils.isLoginUser(session)) {		
-//			return "/users/loginForm";
-//		}
-//		
-//		User sessionedUser	=	HttpSessionUtils.getUserFromSession(session);
-//		
-//		Question question = questionRepository.getOne(id);
-//		
-//		if (!question.isSameWrite(sessionedUser)) {
-//			return "/users/loginForm"; 
-//		}
 		
+		question.update(title, contents);
+		questionRepository.save(question);
+		return String.format("redirect:/questions/%d",id);		
 		
 	}
 	
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Long id, HttpSession session, Model model) {
-		
-		try {
-			Question question = questionRepository.getOne(id);		
-			hasPermission(session, question);
-				questionRepository.deleteById(id);
-			return "redirect:/";
-//			}
-		} catch (IllegalStateException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "/user/login";
+		Question question = questionRepository.getOne(id);
+		Result result	=	valid(session, question);		
+		if(!result.isValid()) {
+			model.addAttribute("errorMessage", result.getErrorMessage());
+			return "/user/login"; 
 		}
-//		
-//		if(!HttpSessionUtils.isLoginUser(session)) {		
-//			return "/users/loginForm";
-//		}
-//		
-//		User sessionedUser	=	HttpSessionUtils.getUserFromSession(session);
-//		
-//		Question question = questionRepository.getOne(id);
-//		
-//		if (!question.isSameWrite(sessionedUser)) {
-//			return "/users/loginForm"; 
-//		}
-//		
-//		questionRepository.deleteById(id);
-//		return "redirect:/";
+		
+		questionRepository.deleteById(id);
+		return "redirect:/";
+		
 		
 	}
+	private Result valid(HttpSession session, Question question) {
+		if (!HttpSessionUtils.isLoginUser(session)) {
+			return Result.fail("로그인이 필요합니다."); 
+		}
+		
+		User loginUser	=	HttpSessionUtils.getUserFromSession(session);
+		if (!question.isSameWrite(loginUser)) {
+			return Result.fail("로그인 정보가 상이합니다."); 
+		}
+		
+		return Result.ok();
+	}
+	
+	
+//	private boolean hasPermission(HttpSession session, Question question) {
+//	if (!HttpSessionUtils.isLoginUser(session)) {
+//		throw new IllegalStateException("로그인이 필요합니다."); 
+//	}
+//	
+//	User loginUser	=	HttpSessionUtils.getUserFromSession(session);
+//	if (!question.isSameWrite(loginUser)) {
+//		throw new IllegalStateException("로그인 정보가 상이합니다."); 
+//	}
+//	
+//	return true;
+//}
+//
 }
