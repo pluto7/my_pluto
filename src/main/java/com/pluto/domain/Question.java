@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Question {
 	@Id
@@ -28,6 +30,9 @@ public class Question {
 	
 	@Lob
 	private String contents;
+	
+	@JsonProperty
+	private Integer countOfAnswer = 0;
 	
 	private LocalDateTime createDate;
 	
@@ -86,6 +91,18 @@ public class Question {
 	public boolean isSameWrite(User longinUser) {
 		// TODO Auto-generated method stub
 		return this.writer.equals(longinUser);
+	}
+
+	public void addAnswer() {
+		// TODO Auto-generated method stub
+		this.countOfAnswer	+= 1;
+		
+	}
+
+	public void deleteAnswer() {
+		// TODO Auto-generated method stub
+		this.countOfAnswer	-= 1;
+		
 	}
 
 	

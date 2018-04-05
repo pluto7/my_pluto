@@ -84,6 +84,12 @@ public class Answer {
 		return "Answer [id=" + id + ", writer=" + writer + ", question=" + question + ", contents=" + contents
 				+ ", createDate=" + createDate + "]";
 	}
+
+	public boolean isSameWriter(User loginUser) {
+		// TODO Auto-generated method stub
+		
+		return loginUser.equals(this.writer);
+	}
 	
 	
 }
